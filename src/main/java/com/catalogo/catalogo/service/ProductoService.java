@@ -8,7 +8,7 @@ import com.catalogo.catalogo.dto.ProductoRequestDTO;
 import com.catalogo.catalogo.dto.ProductoResponseDTO;
 import com.catalogo.catalogo.exception.CategoriaNotFoundException;
 import com.catalogo.catalogo.exception.ProductoNotFoundException;
-import com.catalogo.catalogo.models.Producto;
+import com.catalogo.catalogo.model.Producto;
 import com.catalogo.catalogo.repository.CategoriaRepository;
 import com.catalogo.catalogo.repository.ProductoRepository;
 

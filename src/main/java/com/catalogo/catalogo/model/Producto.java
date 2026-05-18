@@ -1,4 +1,4 @@
-package com.catalogo.catalogo.models;
+package com.catalogo.catalogo.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

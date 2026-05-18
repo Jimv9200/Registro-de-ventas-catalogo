@@ -1,11 +1,11 @@
-package com.catalogo.catalogo.models;
+package com.catalogo.catalogo.model;
 
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,24 +14,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "unidades_medida")
-public class UnidadMedida {
-    
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "imagenes_producto")
+public class ImagenProducto {
+
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    private String url;
 
-    private String abreviatura;
+    private String nombreArchivo;
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private boolean activo;
+    private boolean principal;
+
+    private int orden;
+
+    @ManyToOne
+    @JoinColumn(name ="producto_id", nullable = false)
+    private Producto producto;
+
+    
 }

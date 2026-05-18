@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.catalogo.catalogo.dto.CategoriaRequestDTO;
 import com.catalogo.catalogo.dto.CategoriaResponseDTO;
 import com.catalogo.catalogo.exception.CategoriaNotFoundException;
-import com.catalogo.catalogo.models.Categoria;
+import com.catalogo.catalogo.model.Categoria;
 import com.catalogo.catalogo.repository.CategoriaRepository;
 
 import org.springframework.transaction.annotation.Transactional;
