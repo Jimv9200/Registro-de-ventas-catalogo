@@ -1,5 +1,6 @@
 package com.catalogo.catalogo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Getter
@@ -29,7 +31,7 @@ public class ImagenProducto {
 
     private String url;
 
-    private String nombreArchivo;
+    //private String nombreArchivo;
 
     private boolean principal;
 
@@ -38,6 +40,9 @@ public class ImagenProducto {
     @ManyToOne
     @JoinColumn(name ="producto_id", nullable = false)
     private Producto producto;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean active;
 
     
 }
