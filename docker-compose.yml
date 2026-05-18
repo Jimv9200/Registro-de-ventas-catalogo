@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Servicio de Base de Datos
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql_catalogo
+    environment:
+      MYSQL_DATABASE: catalogo_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    # El healthcheck verifica constantemente si MySQL ya acepta conexiones
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # Servicio del Microservicio
+  catalogo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_catalogo
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql-db:
+        # Condición estricta: Espera a que el healthcheck de MySQL sea exitoso
+        condition: service_healthy
+    environment:
+      # Variables de entorno para conectar tu microservicio a la DB
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/catalogo_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+# Volumen persistente para no perder los datos si se borra el contenedor
+volumes:
+  db_data:

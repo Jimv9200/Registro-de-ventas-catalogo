@@ -1,0 +1,19 @@
+package com.catalogo.catalogo.repository;
+
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.stereotype.Repository;
+
+import com.catalogo.catalogo.models.Producto;
+
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto,Long>{
+    List<Producto> findByCategoryId(Long categoryId);
+
+    Optional<Producto> findByCode(String code);
+
+}
