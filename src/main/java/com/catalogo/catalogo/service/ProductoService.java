@@ -2,6 +2,9 @@ package com.catalogo.catalogo.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.catalogo.dto.ProductoRequestDTO;
@@ -27,6 +30,11 @@ public class ProductoService {
     @Transactional
     public ProductoResponseDTO createProduct(ProductoRequestDTO request){
         return mapProduct(productoRepository.save(buildProducto(request)));
+    }
+
+    public Page<ProductoResponseDTO> searchAllProductosPaginados(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productoRepository.findAll(pageable).map(this::mapProduct);
     }
 
     @Transactional(readOnly = true)

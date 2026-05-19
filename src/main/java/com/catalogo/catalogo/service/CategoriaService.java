@@ -22,46 +22,46 @@ public class CategoriaService {
 
 
     @Transactional
-    public CategoriaResponseDTO crearCategoria(CategoriaRequestDTO request){
-        return mapearCategoria(categoriaRepository.save(construirCategoria(request)));
+    public CategoriaResponseDTO createCategoria(CategoriaRequestDTO request){
+        return mapCategoria(categoriaRepository.save(buildCategoria(request)));
     }
 
     @Transactional(readOnly = true)
-    public CategoriaResponseDTO obtenerCategoria(Long id){
-        return mapearCategoria(categoriaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException(id)));
+    public CategoriaResponseDTO getCategoria(Long id){
+        return mapCategoria(categoriaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException(id)));
     }
 
     @Transactional(readOnly = true)
-    public List<CategoriaResponseDTO> obtenerCategorias(){
+    public List<CategoriaResponseDTO> listCategorias(){
         return categoriaRepository.findAll().stream()
-        .map(this::mapearCategoria)
+        .map(this::mapCategoria)
         .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<CategoriaResponseDTO> obtenerCategoriasHijas(Long id){
+    public List<CategoriaResponseDTO> getCategoriasHijas(Long id){
         return categoriaRepository.obtenerCategoriasHijasById(id).stream()
-        .map(this::mapearCategoria)
+        .map(this::mapCategoria)
         .toList();
         }
 
     @Transactional
-    public CategoriaResponseDTO actualizarCategoria(Long id,CategoriaRequestDTO request){
+    public CategoriaResponseDTO updateCategoria(Long id,CategoriaRequestDTO request){
         Categoria cat=categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException(id));
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
         cat.setIdCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(id)));
-        return mapearCategoria(cat);
+        return mapCategoria(cat);
     }
 
     @Transactional
-    public void eliminarCategoria(Long id){
+    public void deleteCategoria(Long id){
         Categoria cat= categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException(id));
         cat.setActivo(false);
         
     }
 
-    private Categoria construirCategoria(CategoriaRequestDTO request){
+    private Categoria buildCategoria(CategoriaRequestDTO request){
         Categoria cat = new Categoria();
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
@@ -70,7 +70,7 @@ public class CategoriaService {
         return cat;
     }
 
-    private CategoriaResponseDTO mapearCategoria(Categoria categoria){
+    private CategoriaResponseDTO mapCategoria(Categoria categoria){
         CategoriaResponseDTO catResponse = new CategoriaResponseDTO();
         catResponse.setId(categoria.getId());
         catResponse.setName(categoria.getName());
