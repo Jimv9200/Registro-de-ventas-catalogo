@@ -33,7 +33,7 @@ public class Categoria {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria_padre")
-    private Categoria idCategoriaPadre;
+    private Categoria categoriaPadre;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean activo;

@@ -40,7 +40,7 @@ public class CategoriaService {
 
     @Transactional(readOnly = true)
     public List<CategoriaResponseDTO> getCategoriasHijas(Long id){
-        return categoriaRepository.obtenerCategoriasHijasById(id).stream()
+        return categoriaRepository.findByCategoriaPadreId(id).stream()
         .map(this::mapCategoria)
         .toList();
         }
@@ -50,7 +50,7 @@ public class CategoriaService {
         Categoria cat=categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException(id));
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
-        cat.setIdCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(id)));
+        cat.setCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(id)));
         return mapCategoria(cat);
     }
 
@@ -65,7 +65,8 @@ public class CategoriaService {
         Categoria cat = new Categoria();
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
-        cat.setIdCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(request.getIdCategoriaPadre())));
+        if(request.getIdCategoriaPadre() != null)
+            cat.setCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(request.getIdCategoriaPadre())));
         
         return cat;
     }
@@ -75,9 +76,11 @@ public class CategoriaService {
         catResponse.setId(categoria.getId());
         catResponse.setName(categoria.getName());
         catResponse.setDescription(categoria.getDescription());
-        if (categoria.getIdCategoriaPadre() != null) {
-            categoriaRepository.findById(categoria.getIdCategoriaPadre().getId())
-                    .ifPresent(padre -> catResponse.setNombreCategoriaPadre(padre.getName()));
+        if (categoria.getCategoriaPadre() != null) {
+            //categoriaRepository.findById(categoria.getCategoriaPadre().getId())
+              //      .ifPresent(padre -> catResponse.setNombreCategoriaPadre(padre.getName()));
+            
+            catResponse.setNombreCategoriaPadre(categoria.getCategoriaPadre().getName());
         }
         return catResponse;
     }

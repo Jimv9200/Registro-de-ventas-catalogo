@@ -3,8 +3,6 @@ package com.catalogo.catalogo.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.catalogo.catalogo.model.Categoria;
@@ -12,7 +10,7 @@ import com.catalogo.catalogo.model.Categoria;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 
-    @Query("SELECT c from Categoria c where c.idCategoriaPadre = :padre")
-    List<Categoria> obtenerCategoriasHijasById(@Param("padre") Long padre);
+
+    List<Categoria> findByCategoriaPadreId(Long id);
 
 }

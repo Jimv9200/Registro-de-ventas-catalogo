@@ -52,6 +52,12 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.OK).body(productos);
     }
 
+
+    @GetMapping("/todos")
+    public ResponseEntity<List<ProductoResponseDTO>> listAllProductos(){
+        return ResponseEntity.ok(productoService.searchAllProductos());
+    }
+
     @GetMapping("/categoria/{id}")
     public ResponseEntity<List<ProductoResponseDTO>> listProductosByCategoria(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(productoService.findProductByCategory(id));
