@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductoResponseDTO {
 
-    private Long id;
+
     private String name;
     private String description;
     private String sku;
@@ -19,4 +19,5 @@ public class ProductoResponseDTO {
     private BigDecimal price;
     private Long idCategory;
     private BigDecimal iva;
+    private Long UnidadMedidaid;
 }

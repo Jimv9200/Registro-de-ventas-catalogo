@@ -34,6 +34,7 @@ public class CategoriaService {
     @Transactional(readOnly = true)
     public List<CategoriaResponseDTO> listCategorias(){
         return categoriaRepository.findAll().stream()
+        .filter(Categoria::isActive)
         .map(this::mapCategoria)
         .toList();
     }
@@ -41,6 +42,7 @@ public class CategoriaService {
     @Transactional(readOnly = true)
     public List<CategoriaResponseDTO> getCategoriasHijas(Long id){
         return categoriaRepository.findByCategoriaPadreId(id).stream()
+        .filter(Categoria::isActive)
         .map(this::mapCategoria)
         .toList();
         }
@@ -50,14 +52,15 @@ public class CategoriaService {
         Categoria cat=categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException(id));
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
-        cat.setCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(id)));
+        if(request.getIdCategoriaPadre() != null)
+            cat.setCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(id)));
         return mapCategoria(cat);
     }
 
     @Transactional
     public void deleteCategoria(Long id){
         Categoria cat= categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException(id));
-        cat.setActivo(false);
+        cat.setActive(false);
         
     }
 

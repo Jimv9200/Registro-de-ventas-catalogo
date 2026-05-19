@@ -15,6 +15,8 @@ import com.catalogo.catalogo.model.Producto;
 import com.catalogo.catalogo.repository.CategoriaRepository;
 import com.catalogo.catalogo.repository.ProductoRepository;
 
+
+
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -32,22 +34,21 @@ public class ProductoService {
         return mapProduct(productoRepository.save(buildProducto(request)));
     }
 
+    @Transactional(readOnly = true)
     public Page<ProductoResponseDTO> searchAllProductosPaginados(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        return productoRepository.findAll(pageable).map(this::mapProduct);
+        return productoRepository.findByActiveTrue(pageable).map(this::mapProduct);
     }
 
     @Transactional(readOnly = true)
     public ProductoResponseDTO searchProductoByCode(String code){
-        return productoRepository.findByCode(code).stream()
-        .map(this::mapProduct)
-        .findFirst()
-        .orElseThrow(()-> new ProductoNotFoundException(code));
+        return mapProduct(productoRepository.findByCode(code).orElseThrow(()-> new ProductoNotFoundException(code)));
     }
 
     @Transactional(readOnly = true)
     public List<ProductoResponseDTO> searchAllProductos(){
         return productoRepository.findAll().stream()
+        .filter(Producto::isActive)
         .map(this::mapProduct)
         .toList();
     }
@@ -55,6 +56,7 @@ public class ProductoService {
     @Transactional(readOnly = true)
     public List<ProductoResponseDTO> findProductByCategory(Long id){
         return productoRepository.findByCategoryId(id).stream()
+        .filter(Producto::isActive)
         .map(this::mapProduct)
         .toList();
         

@@ -125,7 +125,7 @@ class CategoriaServiceTest {
 
         categoriaService.deleteCategoria(1L);
 
-        assertFalse(cat.isActivo());
+        assertFalse(cat.isActive());
     }
 
     @Test

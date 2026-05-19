@@ -47,7 +47,7 @@ class UnidadMedidaServiceTest {
         UnidadMedidaResponseDTO result = unidadMedidaService.createUnidadMedida(request);
 
         assertNotNull(result);
-        assertEquals("Kilogramo", result.nombre());
+        assertEquals("Kilogramo", result.name());
         assertEquals("kg", result.abreviatura());
     }
 
@@ -80,7 +80,7 @@ class UnidadMedidaServiceTest {
         UnidadMedidaResponseDTO result = unidadMedidaService.searchUnidadMedidaById(1L);
 
         assertNotNull(result);
-        assertEquals("Kilogramo", result.nombre());
+        assertEquals("Kilogramo", result.name());
     }
 
     @Test
@@ -104,8 +104,8 @@ class UnidadMedidaServiceTest {
         List<UnidadMedidaResponseDTO> result = unidadMedidaService.searchAllUnidadesMedida();
 
         assertEquals(2, result.size());
-        assertEquals("Kilogramo", result.get(0).nombre());
-        assertEquals("Metro", result.get(1).nombre());
+        assertEquals("Kilogramo", result.get(0).name());
+        assertEquals("Metro", result.get(1).name());
     }
 
     @Test
@@ -118,7 +118,7 @@ class UnidadMedidaServiceTest {
         UnidadMedidaResponseDTO result = unidadMedidaService.updateUnidadMedida(1L, request);
 
         assertNotNull(result);
-        assertEquals("Libra", result.nombre());
+        assertEquals("Libra", result.name());
         assertEquals("lb", result.abreviatura());
     }
 
