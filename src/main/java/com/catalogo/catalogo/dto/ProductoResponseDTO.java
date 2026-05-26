@@ -17,7 +17,9 @@ public class ProductoResponseDTO {
     private String sku;
     private String code;
     private BigDecimal price;
-    private Long idCategory;
+    private String categoryName;
     private BigDecimal iva;
-    private Long UnidadMedidaid;
+    private String unidadMedida;
+    private BigDecimal purchasePrice;
+
 }

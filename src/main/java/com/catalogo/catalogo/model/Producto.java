@@ -41,6 +41,9 @@ public class Producto {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private BigDecimal purchasePrice;
+
     private String description;
 
     @Column(unique = true)
@@ -53,7 +56,7 @@ public class Producto {
     private BigDecimal price;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private boolean active;
+    private boolean active=true;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -64,8 +67,8 @@ public class Producto {
     private Categoria category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "measurement_id")
-    private UnidadMedida measurement;
+    @JoinColumn(name = "unidad_medida_id")
+    private UnidadMedida unidadMedida;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ImagenProducto> imagenes = new ArrayList<>();

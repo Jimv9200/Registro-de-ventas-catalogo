@@ -52,8 +52,8 @@ public class CategoriaService {
         Categoria cat=categoriaRepository.findById(id).orElseThrow(()-> new CategoriaNotFoundException(id));
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
-        if(request.getIdCategoriaPadre() != null)
-            cat.setCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(id)));
+        if(request.getCategoriaPadreId() != null)
+            cat.setCategoriaPadre(categoriaRepository.findById(request.getCategoriaPadreId()).orElseThrow(()-> new CategoriaNotFoundException(id)));
         return mapCategoria(cat);
     }
 
@@ -68,8 +68,8 @@ public class CategoriaService {
         Categoria cat = new Categoria();
         cat.setName(request.getName());
         cat.setDescription(request.getDescription());
-        if(request.getIdCategoriaPadre() != null)
-            cat.setCategoriaPadre(categoriaRepository.findById(request.getIdCategoriaPadre()).orElseThrow(()-> new CategoriaNotFoundException(request.getIdCategoriaPadre())));
+        if(request.getCategoriaPadreId() != null)
+            cat.setCategoriaPadre(categoriaRepository.findById(request.getCategoriaPadreId()).orElseThrow(()-> new CategoriaNotFoundException(request.getCategoriaPadreId())));
         
         return cat;
     }

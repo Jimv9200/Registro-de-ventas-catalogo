@@ -22,6 +22,8 @@ public class ProductoRequestDTO {
     @NotBlank(message = "Asigne un nombre valido al producto") @Size(min = 3, message = "El nombre del producto debe tener al menos 3 caracteres")
     private String name;
 
+    @NotNull @Positive(message = "El precio de compra debe de ser mayor de 0 y positivo")
+    private BigDecimal purchasePrice;
 
     private String description;
 
@@ -30,6 +32,8 @@ public class ProductoRequestDTO {
 
     @NotNull
     private Long categoryId;
+
+    private Long unidadMedidaId;
 
     @NotBlank
     private String code;

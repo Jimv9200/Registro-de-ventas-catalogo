@@ -11,11 +11,11 @@ import com.catalogo.catalogo.dto.ProductoRequestDTO;
 import com.catalogo.catalogo.dto.ProductoResponseDTO;
 import com.catalogo.catalogo.exception.CategoriaNotFoundException;
 import com.catalogo.catalogo.exception.ProductoNotFoundException;
+import com.catalogo.catalogo.exception.UnidadMedidaNotFoundException;
 import com.catalogo.catalogo.model.Producto;
 import com.catalogo.catalogo.repository.CategoriaRepository;
 import com.catalogo.catalogo.repository.ProductoRepository;
-
-
+import com.catalogo.catalogo.repository.UnidadMedidaRespository;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ public class ProductoService {
 
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final UnidadMedidaRespository unidadMedidaRepository;
 
     //CRUD PRODUCTO
 
@@ -62,6 +63,15 @@ public class ProductoService {
         
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductoResponseDTO> searchProductosByNameOrCode(String termino, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productoRepository.buscarPorNombreOCodigo(termino, pageable).stream()    
+        .filter(Producto::isActive)
+        .map(this::mapProduct)
+        .toList();
+    }
+
     @Transactional
     public ProductoResponseDTO updateProduct (String code, ProductoRequestDTO request){
         Producto p = productoRepository.findByCode(code).orElseThrow(()-> new ProductoNotFoundException(code));
@@ -72,6 +82,8 @@ public class ProductoService {
         p.setName(request.getName());
         p.setPrice(request.getPrice());
         p.setSku(request.getSku());
+        p.setPurchasePrice(request.getPurchasePrice());
+        p.setUnidadMedida(request.getUnidadMedidaId() != null ? unidadMedidaRepository.findById(request.getUnidadMedidaId()).orElseThrow(()-> new UnidadMedidaNotFoundException("No se ha encontrado la unidad de medida con codigo:"+request.getUnidadMedidaId())) : null);
         return mapProduct(p);
     }
 
@@ -90,6 +102,8 @@ public class ProductoService {
         p.setName(request.getName());
         p.setPrice(request.getPrice());
         p.setSku(request.getSku());
+        p.setPurchasePrice(request.getPurchasePrice());
+        p.setUnidadMedida(unidadMedidaRepository.findById(request.getUnidadMedidaId()).orElseThrow(()-> new UnidadMedidaNotFoundException("No se ha encontrado la unidad de medida con codigo:"+request.getUnidadMedidaId())));
         return p;
     }
 
@@ -100,9 +114,12 @@ public class ProductoService {
         response.setName(product.getName());
         response.setPrice(product.getPrice());
         response.setDescription(product.getDescription());
-        response.setIdCategory(product.getCategory().getId());
+        response.setCategoryName(product.getCategory().getName());
         response.setIva(product.getIva());
         response.setSku(product.getSku());
+        response.setPurchasePrice(product.getPurchasePrice());
+        response.setUnidadMedida(product.getUnidadMedida() != null ? product.getUnidadMedida().getAbreviatura() : null);
+
         return response;
     }
 }

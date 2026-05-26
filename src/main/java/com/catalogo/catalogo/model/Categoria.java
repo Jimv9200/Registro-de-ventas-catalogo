@@ -36,5 +36,5 @@ public class Categoria {
     private Categoria categoriaPadre;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private boolean active;
+    private boolean active=true;
 }

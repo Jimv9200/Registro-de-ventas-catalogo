@@ -3,6 +3,7 @@ package com.catalogo.catalogo.controller;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.catalogo.catalogo.dto.ProductoRequestDTO;
 import com.catalogo.catalogo.dto.ProductoResponseDTO;
+
 import com.catalogo.catalogo.service.ProductoService;
 
 import jakarta.validation.Valid;
@@ -40,6 +42,13 @@ public class ProductoController {
     public ResponseEntity<ProductoResponseDTO> getProductoById(@PathVariable String code){
         return ResponseEntity.status(HttpStatus.OK).body(productoService.searchProductoByCode(code));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductoResponseDTO>> searchProductosByNameOrCode(@RequestParam String termino, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        List<ProductoResponseDTO> productos = productoService.searchProductosByNameOrCode(termino, page, size);
+        return ResponseEntity.ok(productos);    
+    }
+
 
     @PutMapping("/{code}")
     public ResponseEntity<ProductoResponseDTO> updateProducto(@PathVariable String code, @Valid @RequestBody ProductoRequestDTO producto){
